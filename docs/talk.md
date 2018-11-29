@@ -283,7 +283,7 @@ Have a look at the qualities.
 
 ----
 
-<iframe src="data/qualities/data" width="100%" height="600px"></iframe>
+<iframe src="//gibbons-lab.github.io/ccmb_workshop/data/qualities/data" width="100%" height="600px"></iframe>
 
 ---
 
