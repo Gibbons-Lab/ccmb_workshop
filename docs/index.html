@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Presentation</title>
+
+		<link rel="stylesheet" href="reveal/css/reveal.css">
+		<link rel="stylesheet" href="assets/css/science.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="assets/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal/css/print/pdf.css' : 'reveal/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div id="hidden" style="display:none;">
+            <div class="footer">
+            <a href="hhttps://creativecommons.org/licenses/by-nc-sa/4.0/"><i class="fa fa-bullhorn"></i>CC BY-NC-SA 4.0</a>
+            <a href="https://cdiener.com"><i class="fa fa-globe"></i>cdiener.com</a>
+            <a href="https://github.com/cdiener"><i class="fa fa-github"></i>cdiener</a>
+            <a href="https://twitter.com/thaasophobia"><i class="fa fa-twitter"></i>@thaasophobia</a>
+            </div></div>
+			<div class="slides">
+				<section data-markdown="talk.md"
+				id="markdown"
+				data-separator-vertical="^\n----\n"
+				data-separator-notes="^Note:"></section>
+			</div>
+		</div>
+
+		<script src="reveal/lib/js/head.min.js"></script>
+		<script src="reveal/js/reveal.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/lib/js/emojione.min.js"></script>
+        <script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				width: 1200,
+				height: 750,
+                backgroundTransition: 'zoom',
+                math: {
+		            mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js',
+		            config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+	            },
+                markdown: {
+                    smartypants: true
+                },
+				dependencies: [
+					{ src: 'reveal/plugin/markdown/marked.js' },
+					{ src: 'reveal/plugin/markdown/markdown.js' },
+					{ src: 'reveal/plugin/notes/notes.js', async: true },
+					{ src: 'reveal/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'reveal/plugin/math/math.js', async: true }
+                ]
+			});
+
+            emojione.imageType = 'svg';
+            emojione.ascii = true;
+
+            Reveal.addEventListener( 'slidechanged', function( event ) {
+                var current = event.currentSlide;
+                window.MathJax.Hub.Rerender(current);
+                current.innerHTML = emojione.toImage(current.innerHTML);
+            } );
+
+			var footer = document.getElementsByClassName("footer")[0];
+    		if ( window.location.search.match( /print-pdf/gi ) ) {
+        		Reveal.addEventListener( 'ready', function( event ) {
+					var backgrounds = document.querySelectorAll(".slide-background");
+            		Array.from(backgrounds).forEach(
+						function(el) {el.innerHTML += footer.outerHTML;});
+					var sections = document.querySelectorAll("section");
+					Array.from(sections).forEach(
+						function(el) {el.innerHTML = emojione.toImage(el.innerHTML);});
+        		});
+    		} else {
+        		document.querySelector("div.reveal").appendChild(footer);
+   			}
+		</script>
+	</body>
+</html>
