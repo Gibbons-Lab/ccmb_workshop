@@ -283,7 +283,7 @@ Have a look at the qualities.
 
 ----
 
-<iframe src="//gibbons-lab.github.io/ccmb_workshop/data/qualities/data" width="100%" height="600px"></iframe>
+<a href="data/qualities/data" target="_blank">:bar_chart: See output...</a>
 
 ---
 
@@ -417,7 +417,7 @@ qiime diversity core-metrics-phylogenetic \
 
 ----
 
-<iframe src="data/weighted_unifrac/data" width="100%" height="600px"></iframe>
+<a href="data/weighted_unifrac/data" target="_blank">:bar_chart: See output...</a>
 
 ---
 
@@ -433,7 +433,7 @@ qiime diversity alpha-group-significance \
 
 ----
 
-<iframe src="data/alpha_shannon/data" width="100%" height="600px"></iframe>
+<a href="data/alpha_shannon/data" target="_blank">:bar_chart: See output...</a>
 
 ---
 
@@ -496,7 +496,7 @@ cancer samples?
 
 ----
 
-<iframe src="data/barplot/data" width="100%" height="600px"></iframe>
+<a href="data/barplot/data" target="_blank">:bar_chart: See output...</a>
 
 ---
 
