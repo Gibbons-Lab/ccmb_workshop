@@ -33,7 +33,7 @@ commands = extract_commands("docs/talk.md")
 
 
 def test_cleanup():
-    res = run(["rm", "-rf", "dada2 tree diversity crc_diversity"], shell=True)
+    res = run("rm -rf dada2 tree diversity crc_diversity", shell=True)
     assert res.returncode == 0
 
 
