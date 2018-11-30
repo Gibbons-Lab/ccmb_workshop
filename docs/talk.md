@@ -251,7 +251,7 @@ are importing and what *type of artifact* we want.
 # use `\` to break up long lines
 qiime tools import qiime tools import \
   --type 'SampleData[SequencesWithQuality]' \
-  --input-path ubc_manifest.tsv \
+  --input-path ubc_manifest.csv \
   --output-path ubc_data.qza \
   --input-format SingleEndFastqManifestPhred33
 ```
