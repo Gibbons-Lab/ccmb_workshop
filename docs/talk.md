@@ -374,7 +374,7 @@ You can visualize your tree using iTOL (https://itol.embl.de/).
 
 ## Diversity
 
-In 16S amplicon sequencing we are usually interested in two different diversity quantities,
+In microbial community analysis we are usually interested in two different diversity quantities,
 *alpha diversity* and *beta diversity*.
 
 ---
