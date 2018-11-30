@@ -43,7 +43,7 @@ df = art.view(pd.DataFrame).transpose()
 
 #load metadata
 
-meta = pd.read_csv(args.m,sep='\t',index_col=0)
+meta = pd.read_csv(args.m,sep='\t',index_col=0).loc[df.columns]
 case_samples = meta.index[meta['disease_state']=='case'].tolist()
 control_samples = meta.index[meta['disease_state']=='control'].tolist()
 
@@ -56,7 +56,7 @@ all_pvals_data = []
 sig_otus_all_data_names = []
 all_pvals_data_names = []
 
-#test for significant differences 
+#test for significant differences
 for i in range(df_case.shape[0]):
 	if df_control.iloc[i,:].astype(bool).sum()/float(df_control.shape[1]) >= float(args.t) or df_case.iloc[i,:].astype(bool).sum()/float(df_case.shape[1]) >= float(args.t):
 		all_pvals_data.append(sp.stats.ranksums(df_case.iloc[i,:],df_control.iloc[i,:])[1])

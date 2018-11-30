@@ -140,13 +140,13 @@ Type "terminal" in the application menu.
 
 You can connect to the server with
 
-```bash
+```sh
 ssh user@s167.ok.ubc.ca
 ```
 
 and transfer files using `rsync`
 
-```
+```sh
 rsync user@s167.ok.ubc.ca:~/file.txt .
 ```
 
@@ -167,7 +167,7 @@ https://docs.qiime2.org/2018.11/install/
    or [Linux](https://data.qiime2.org/distro/core/qiime2-2018.11-py35-linux-conda.yml)
 3. Set up the Qiime 2 environment and activate it
 
-```bash
+```sh
 conda env create -n qiime2-2018.11 --file qiime2-2018.11-py35-osx-conda.yml
 source activate qiime2-2018.11
 ```
@@ -182,7 +182,7 @@ See https://store.docker.com/editions/community/docker-ce-desktop-windows.
 
 With docker you can get the Qiime 2 container with:
 
-```bash
+```sh
 docker pull qiime2/core:2018.11
 ```
 
@@ -207,7 +207,7 @@ Also see [this forum post](https://forum.qiime2.org/t/issue-with-docker-toolbox-
 
 Start by copying the raw data to your home directory:
 
-```bash
+```sh
 cd ~
 cp -r /srv/workshop/* .
 ```
@@ -267,7 +267,7 @@ qiime demux summarize --i-data ubc_data.qza --o-visualization qualities.qzv
 
 Use WinSCP or the following to transfer the file to your local machine:
 
-```bash
+```sh
 rsync user@s167.ok.ubc.ca:~/qualities.qzv .
 ```
 
@@ -277,13 +277,9 @@ rsync user@s167.ok.ubc.ca:~/qualities.qzv .
 
 https://view.qiime2.org
 
-Have a look at the qualities.
+Have a <a href="data/qualities/data" target="_blank">:bar_chart:look</a> at the qualities.
 
 :thinking_face: What do you observe across the read? Where would you truncate the reads?
-
-----
-
-<a href="data/qualities/data" target="_blank">:bar_chart: See output...</a>
 
 ---
 
@@ -354,7 +350,7 @@ might we be interested in?
 ## Relationship between ASVs
 
 One of the basic things we might want to see is how the sequences across
-all samples relate to each. We are interested in their *phylogeny*.
+all samples are related to one another. We are interested in their *phylogeny*.
 
 <br>
 
@@ -378,7 +374,7 @@ You can visualize your tree using iTOL (https://itol.embl.de/).
 
 ## Diversity
 
-In metagenomics we are usually interested in two different diversity quantities,
+In 16S amplicon sequencing we are usually interested in two different diversity quantities,
 *alpha diversity* and *beta diversity*.
 
 ---
@@ -400,9 +396,9 @@ How different are two or more samples/donors/sites from each other?
 
 <br>
 
-- how many taxa are shared between samples? → Jaccard index
-- do shared taxa have the same abundance? → Bray-Curtis distance
-- do samples share phylogenetically similar taxa? → UniFrac, Faith PD
+- how many taxa are *shared* between samples? → Jaccard index
+- do shared taxa have the *same abundance*? → Bray-Curtis distance
+- do samples share *phylogenetically similar* taxa? → UniFrac, Faith PD
 
 ---
 
@@ -447,7 +443,7 @@ qiime diversity alpha-group-significance \
 
 ## But what organisms are there in our sample?
 
-We are still just working with sequences and have no idea what organisms
+We are still just working with sequences and have no idea what *organisms*
 those correspond to.
 
 <br>
@@ -456,14 +452,14 @@ those correspond to.
 
 ---
 
-Even though just looking for our sequence in a database of known genes
+Even though just looking for our sequence in a *database of known genes*
 seems like the best idea that does not work great in practice. Why?
 
 <br>
 
-More elaborate methods use subsequence and their counts to predict the
-lineage/taxonomy with machine learning methods. For 16S fragments this
-provides better generalization.
+More elaborate methods use *subsequences (k-mers)* and their counts to *predict* the
+lineage/taxonomy with *machine learning* methods. For 16S fragments this
+provides better *generalization*.
 
 ---
 
@@ -630,5 +626,317 @@ data.
 <img src="assets/race_rs.png" width="100%">
 
 ---
+
+<!-- .slide: data-background="#2962FF" class="dark" -->
+
+# Walkthrough III
+
+## Percentile Normalization
+
+---
+
+<!-- .slide: data-background="assets/lab.jpg" class="dark" -->
+
+# Even more data
+
+We will continue using colorectal cancer data sets, but this time from a
+larger cohort (408 donors).
+
+1. Baxter study (https://doi.org/10.1186/s13073-016-0290-3, n=292)
+2. Zeller study (https://doi.org/10.15252/msb.20145645, n=116)
+
+You already have the counts with assigned taxa in the artifact
+`crc_dataset.qza`. The metadata can be found in `crc_metadata.tsv`.
+
+---
+
+## Batch effects in the wild
+
+As mentioned before diversity analysis might be a good initial step. To make
+it easier on us we will only use the non-phylogenetic core metrics.
+
+<br>
+
+:thinking_face: do you remember the command? If not, does looking at the
+[available plugins](https://docs.qiime2.org/2018.11/plugins/) help?
+
+----
+
+```bash
+qiime diversity core-metrics \
+    --i-table crc_dataset.qza \
+    --p-sampling-depth 100000 \
+    --m-metadata-file crc_metadata.tsv \
+    --output-dir crc_diversity
+```
+
+Have a look at the Bray-Curtis PCoA plot and observe the batch effect.
+
+<a href="data/crc_bray/data" target="_blank">:bar_chart: See output...</a>
+
+:thinking_face: Why is this likely a batch effect and not biological signal?
+
+---
+
+## Running percentile normalization
+
+There is a Qiime 2 plugin for percentile normalization by Claire Duvallet.
+In an existing Qiime 2 installation you can get it with
+
+```sh
+conda install -c cduvallet q2_perc_norm
+```
+
+It is already installed on the server :tada:
+
+----
+
+The Qiime 2 perc-norm plugin only operates on relative frequency tables,
+so let us first convert our table into that format...
+
+```bash
+qiime feature-table relative-frequency \
+	--i-table crc_dataset.qza \
+	--o-relative-frequency-table crc_relative.qza
+```
+
+Now we can continue with the actual normalization :point_down:
+
+----
+
+```bash
+qiime perc-norm percentile-normalize \
+	--i-table crc_relative.qza \
+	--m-metadata-file crc_metadata.tsv \
+	--m-metadata-column disease_state \
+	--m-batch-file crc_metadata.tsv \
+	--m-batch-column study \
+	--p-otu-thresh 0.0 \
+	--o-perc-norm-table percentile_normalized.qza
+```
+
+---
+
+Cool, we have our normalized data. Let's just plug that into the other
+Qiime 2 actions...
+
+<img src="assets/curse.png" width="60%">
+
+---
+
+## Qiime does let you work around that if you know what you are doing :nerd_face:
+
+----
+
+## The Artifact API
+
+You can open a Python interpreter with typing `ipython` (close it with `Ctrl-D`).
+
+```python3
+from qiime2 import Artifact
+import pandas as pd
+
+df = Artifact.load("percentile_normalized.qza").view(pd.DataFrame)
+converted = Artifact.import_data("FeatureTable[Frequency]", df)
+converted.save("pnorm_freq.qza")
+```
+
+---
+
+## PCoA of the normalized data
+
+We do not want to rarefy this time so we have to build up the PCoA steps
+ourselves (can not use `qiime diversity core-metrics`).
+
+:thinking_face: Could you come up with the commands yourselves? Think about the
+data (artifacts) you will need for each step...
+
+Solution :point_down:
+
+----
+
+### Step 1: Get the Bray-Curtis distance matrix
+
+```bash
+qiime diversity beta \
+    --i-table pnorm_freq.qza
+    --p-metric braycurtis \
+    --o-distance-matrix pnorm_bray.qza
+```
+
+----
+
+### Step 2: Calculate the PCoA
+
+```bash
+qiime diversity pcoa --i-distance-matrix pnorm_bray.qza --o-pcoa pnorm_pcoa.qza
+```
+
+----
+
+### Step 3: Visualize with Emperor
+
+```bash
+qiime emperor plot \
+    --i-pcoa pnorm_pcoa.qza \
+    --m-metadata-file crc_metadata.tsv \
+    --o-visualization pnorm_pcoa_emperor.qzv
+```
+
+<a href="data/pnorm_pcoa/data" target="_blank">:bar_chart: See output...</a>
+
+---
+
+<!-- .slide: data-background="#00897B" class="dark" -->
+
+## Non-parametric testing
+
+This is currently not included in Qiime 2. However, you can connect
+your own scripts to Qiime 2.
+
+See `wilcoxon_test.py`.
+
+----
+
+```sh
+(qiime2) cdiener@moneta [ubc2018] python wilcoxon_test.py -h
+usage: wilcoxon_test.py [-h] -i I -m M [-o O] [-a A] [-t T]
+
+run rank sums tests on case-control dataset
+
+optional arguments:
+  -h, --help  show this help message and exit
+  -i I        input OTU table qiime artifact (rows = samples, columns =
+              phylotypes; default format = tab-delimited)
+  -m M        case-control metadata with "disease_state" column
+  -o O        output file name [default: rank_sums_results.txt]
+  -a A        alpha-level for test
+  -t T        occurence threshold in case or control
+```
+
+---
+
+## Within study testing
+
+Lets now look at the significant results in the following settings:
+
+1. in the individual studies without normalization
+2. in the pooled studies without normalization
+3. in the pooled studies with percentile normalization
+
+---
+
+## Separating the studies
+
+A data set can be stratified with the `feature-table` plugin:
+
+```bash
+qiime feature-table filter-samples \
+	--i-table crc_dataset.qza \
+	--m-metadata-file crc_metadata.tsv \
+	--p-where "study=='baxter'" \
+	--o-filtered-table baxter_table.qza
+```
+
+...and for the second study:
+
+```bash
+qiime feature-table filter-samples \
+	--i-table crc_dataset.qza \
+	--m-metadata-file crc_metadata.tsv \
+	--p-where "study=='zeller'" \
+	--o-filtered-table zeller_table.qza
+```
+
+---
+
+## Example: The Baxter study
+
+```bash
+python wilcoxon_test.py -i baxter_table.qza -m crc_metadata.tsv
+```
+
+This will generate a file `rank_sums_results.txt` with the taxonomy and
+p-values for each significant results and a plot `p-value_histogram.png`
+that contains the overall distribution of p-values.
+
+http://varianceexplained.org/statistics/interpreting-pvalue-histogram/
+
+---
+
+## Your turn!
+
+<img src="assets/coding.gif" width="50%">
+
+----
+
+Run the differential tests for the data sets as specified before:
+
+1. in the individual studies without normalization
+2. in the pooled studies without normalization
+3. in the pooled studies with percentile normalization
+
+:thinking_face: What do you observe in terms of significant results and p-value distributions.
+
+:thinking_face: What happens if you modify the significance (alpha) level or
+the occurrence threshold?
+
+----
+
+# Solutions
+
+<img src="data/p-value_histogram.png" width="60%">
+
+----
+
+```bash
+python wilcoxon_test.py -i zeller_table.qza -m crc_metadata.tsv
+```
+
+```bash
+python wilcoxon_test.py -i crc_dataset.qza -m crc_metadata.tsv
+```
+
+```bash
+python wilcoxon_test.py -i pnorm_freq.qza -m crc_metadata.tsv
+```
+
+```bash
+python wilcoxon_test.py -i pnorm_freq.qza -m crc_metadata.tsv -a 0.01 -t 0.1
+```
+
+---
+
+<!-- .slide: data-background="#3F51B5" class="dark" -->
+
+### And we are done :clap:
+
+# Thanks!
+
+---
+
+# :biking_woman: Too fast? :biking_man:
+
+Here some more questions to investigate.
+
+---
+
+Are beta diversity differences explained by the phenotype?
+
+How much variance is explained by healthy vs. disease?
+
+What about batch effects?
+
+https://docs.qiime2.org/2018.11/plugins/available/diversity/beta-group-significance/
+
+---
+
+Could you predict if someone had colorectal cancer just from 16S data?
+
+Does pooling studies help here?
+
+https://docs.qiime2.org/2018.11/plugins/available/sample-classifier/classify-samples/
+
+
 
 
