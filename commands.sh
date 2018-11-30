@@ -3,7 +3,7 @@
 source activate qiime2-2018.11
 
 # use `\` to break up long lines
-qiime tools import qiime tools import \
+qiime tools import \
   --type 'SampleData[SequencesWithQuality]' \
   --input-path ubc_manifest.csv \
   --output-path ubc_data.qza \
