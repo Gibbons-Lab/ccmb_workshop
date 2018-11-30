@@ -374,6 +374,8 @@ You can visualize your tree using iTOL (https://itol.embl.de/).
 
 ---
 
+<!-- .slide: data-background="#00897B" class="dark" -->
+
 ## Diversity
 
 In metagenomics we are usually interested in two different diversity quantities,
@@ -417,6 +419,10 @@ qiime diversity core-metrics-phylogenetic \
 
 ----
 
+## Principal Coordinate Analysis
+
+<img src="assets/pcoa.png" width="100%">
+
 <a href="data/weighted_unifrac/data" target="_blank">:bar_chart: See output...</a>
 
 ---
@@ -431,11 +437,13 @@ qiime diversity alpha-group-significance \
     --o-visualization diversity/alpha_groups.qzv
 ```
 
-----
+<br>
 
 <a href="data/alpha_shannon/data" target="_blank">:bar_chart: See output...</a>
 
 ---
+
+<!-- .slide: data-background="#00897B" class="dark" -->
 
 ## But what organisms are there in our sample?
 
@@ -492,9 +500,9 @@ cancer samples?
 
 ## Phylogenetic ranks
 
-<img src="assets/ranks.png" width="50%">
+<img src="assets/ranks.png" width="40%">
 
-----
+<br>
 
 <a href="data/barplot/data" target="_blank">:bar_chart: See output...</a>
 
@@ -523,6 +531,88 @@ a *phenotype* of interest (for instance case vs. control).
 
 ---
 
+<!-- .slide: data-background="#00897B" class="dark" -->
+
+## Data transformations
+
+Converting abundances to relative abundances (percent) makes the data
+*compositional*, meaning the relative abundance of one taxon depends
+on the others.
+
+> A sample can not have 80% B. fragilis and 50% E. coli at the same time.
+
+Loading the sequencer itself already introduces some compositional effect
+as well (constant amount of DNA).
+
+---
+
+*Compositional* data usually violates *independence* assumptions of most
+statistical tests.
+
+There are many strategies to deal with that. Log-ratios work pretty
+well in most cases.
+
+---
+
+## Compositional testing in Qiime 2
+
+Qiime 2 has a methods to test in compositional data. [ANCOM](https://www.ncbi.nlm.nih.gov/pubmed/26028277)
+tests with single taxa and [GNEISS](https://msystems.asm.org/content/2/1/e00162-16) tests for balances between several
+taxa.
+
+:thinking_face: But which taxonomy rank should we use?
+
+---
+
+## Summarizing feature tables
+
+In Qiime 2 we can summarize a feature table at a particular taxonomy rank
+using the `collapse` method.
+
+```bash
+qiime taxa collapse \
+    --i-table dada2/table.qza \
+    --i-taxonomy taxa.qza \
+    --p-level 6 \
+    --o-collapsed-table genus.qza
+```
+
+---
+
+## ANCOM
+
+Qiime 2 has a method that improves testing for compositional data
+called [ANCOM](https://www.ncbi.nlm.nih.gov/pubmed/26028277). It can not
+deal with zero abundances so it needs us to add a *pseudo count* first.
+
+<br>
+
+```bash
+qiime composition add-pseudocount --i-table genus.qza --o-composition-table added_pseudo.qza
+```
+
+```bash
+qiime composition ancom \
+    --i-table added_pseudo.qza \
+    --m-metadata-file samples.tsv \
+    --m-metadata-column status \
+    --o-visualization ancom.qzv
+```
+
+<br>
+
+<a href="data/ancom/data" target="_blank">:bar_chart: See output...</a>
+
+---
+
+## Choosing the right test
+
+Parametric tests tend to have better *statistical power* but assumptions
+about the underlying *distribution* might not be adequate for microbiome
+data.
+
+---
+
 <!-- .slide: data-background="assets/hare.jpg" class="dark" -->
 
 # Non-parametric tests
@@ -538,15 +628,6 @@ a *phenotype* of interest (for instance case vs. control).
 ## Faster way: use ranks
 
 <img src="assets/race_rs.png" width="100%">
-
----
-
-<!-- .slide: data-background="#00897B" class="dark" -->
-
-# Compositional tests
-
-The biomass in a system is finite, so increasing one taxa may require lowering
-the others.
 
 ---
 
