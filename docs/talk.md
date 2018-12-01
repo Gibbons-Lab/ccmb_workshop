@@ -317,7 +317,13 @@ understand what is happening:
 qiime dada2 denoise-single \
     --i-demultiplexed-seqs ubc_data.qza \
     --p-trunc-len 220 --p-trim-left 10 \
-    --output-dir dada2
+    --output-dir dada2 --verbose
+```
+
+Alternatively just pull the pre-computed data with:
+
+```sh
+cp -r /srv/dada2 ~
 ```
 
 ---
@@ -464,6 +470,8 @@ provides better *generalization*.
 ---
 
 We will use a classifier trained on the GreenGenes database.
+
+https://docs.qiime2.org/2018.11/data-resources/
 
 ```bash
 qiime feature-classifier classify-sklearn \
