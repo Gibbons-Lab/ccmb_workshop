@@ -2,12 +2,13 @@
 
 # Qiime II for 16S rDNA
 
-### Sean M. Gibbons and Christian Diener
+### Christian Diener & Sean M. Gibbons
 
 <img src="assets/logo_white.png" width="40%">
 
-2018-12-04<br>
-*CCMB workshop*
+*CCMB workshop 2018*
+
+https://gibbons-lab.github.io/ccmb_workshop
 
 ---
 
@@ -190,6 +191,17 @@ Also see [this forum post](https://forum.qiime2.org/t/issue-with-docker-toolbox-
 
 ---
 
+### Wait... what?
+
+<img src="assets/guide.png" width="30%">
+
+*All* output we generate on the server can be found in the
+`treasure_chest` folder at
+
+https://github.com/gibbons-lab/ccmb_workshop
+
+---
+
 <!-- .slide: data-background="assets/lab.jpg" class="dark" -->
 
 ## Our data
@@ -220,9 +232,16 @@ This will give you the following:
 
 ---
 
-## Illumina filenames (Basespace)
+## Illumina FastQ files (Basespace)
 
 <img src="assets/illumina.png" width="60%">
+
+```plaintext
+@SRR2143527.13917 13917 length=251
+TACGTAGGTGGCGAGCGTTATCCGGAATTATTGGGCGTAAA...
++
+BBBBAF?A@D2BEEEGGGFGGGHGGGCFGFHHCFHCEFGGH...
+```
 
 ---
 
@@ -740,7 +759,7 @@ Qiime 2 actions...
 
 You can open a Python interpreter with typing `ipython` (close it with `Ctrl-D`).
 
-```python3
+```python
 from qiime2 import Artifact
 import pandas as pd
 
@@ -923,7 +942,7 @@ python wilcoxon_test.py -i pnorm_freq.qza -m crc_metadata.tsv -a 0.01 -t 0.1
 
 ---
 
-# :biking_woman: Too fast? :biking_man:
+# :bike: Too fast? :blue_car:
 
 Here some more questions to investigate.
 
