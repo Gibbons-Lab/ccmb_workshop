@@ -767,7 +767,7 @@ Solution :point_down:
 
 ```bash
 qiime diversity beta \
-    --i-table pnorm_freq.qza
+    --i-table pnorm_freq.qza \
     --p-metric braycurtis \
     --o-distance-matrix pnorm_bray.qza
 ```
