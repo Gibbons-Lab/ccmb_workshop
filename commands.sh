@@ -14,7 +14,7 @@ qiime demux summarize --i-data ubc_data.qza --o-visualization qualities.qzv
 qiime dada2 denoise-single \
     --i-demultiplexed-seqs ubc_data.qza \
     --p-trunc-len 220 --p-trim-left 10 \
-    --output-dir dada2
+    --output-dir dada2 --verbose
 
 qiime phylogeny align-to-tree-mafft-fasttree \
     --i-sequences dada2/representative_sequences.qza \
@@ -77,7 +77,7 @@ qiime perc-norm percentile-normalize \
 	--o-perc-norm-table percentile_normalized.qza
 
 qiime diversity beta \
-    --i-table pnorm_freq.qza
+    --i-table pnorm_freq.qza \
     --p-metric braycurtis \
     --o-distance-matrix pnorm_bray.qza
 
