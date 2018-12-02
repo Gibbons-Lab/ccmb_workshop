@@ -1,6 +1,6 @@
 <!-- .slide: data-background="#3F51B5" class="dark" -->
 
-# Qiime II for 16S rDNA
+# Qiime II for 16S Amplicon Sequence Analysis
 
 ### Christian Diener & Sean M. Gibbons
 
@@ -206,7 +206,7 @@ https://github.com/gibbons-lab/ccmb_workshop
 
 ## Our data
 
-16S sequencing data of the V4 region from fecal samples
+16S amplicon sequencing data of the V4 region from fecal samples
 
 16 healthy donors and 16 donors with colorectal cancer (CRC).
 
@@ -483,7 +483,7 @@ seems like the best idea that does not work great in practice. Why?
 <br>
 
 More elaborate methods use *subsequences (k-mers)* and their counts to *predict* the
-lineage/taxonomy with *machine learning* methods. For 16S fragments this
+lineage/taxonomy with *machine learning* methods. For 16S amplicon fragments this
 provides better *generalization*.
 
 ---
