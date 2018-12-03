@@ -217,6 +217,12 @@ https://github.com/gibbons-lab/ccmb_workshop
 
 ---
 
+## What will we do today?
+
+<img src="assets/steps.png" width="100%">
+
+---
+
 Start by copying the raw data to your home directory:
 
 ```sh
@@ -342,7 +348,7 @@ qiime dada2 denoise-single \
 Alternatively just pull the pre-computed data with:
 
 ```sh
-cp -r /srv/dada2 ~
+cp -r /srv/treasure_chest/dada2 ~
 ```
 
 ---
