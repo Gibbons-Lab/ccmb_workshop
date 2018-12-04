@@ -348,7 +348,7 @@ qiime dada2 denoise-single \
 Alternatively just pull the pre-computed data with:
 
 ```sh
-cp -r /srv/treasure_chest/dada2 ~
+cp -r /srv/workshop/treasure_chest/dada2 ~
 ```
 
 ---
