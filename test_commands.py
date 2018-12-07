@@ -1,30 +1,40 @@
 from subprocess import run
+from datetime import datetime
 import pytest
 
 
-def extract_commands(file, out="commands.sh", lang="bash"):
+def extract_commands(file, out="commands.sh",
+                     wrappers={"bash": "%s\n",
+                               "python": "python -e 'exec(\"\"\"%s\"\"\")'\n\n"}):
     """Extract all commands for a particular language from a markdown file."""
-    open_tag = "```%s" % lang
-    close_tag = "```"
+    open_tags = {"```%s" % lang: lang for lang in wrappers}
+    close_tag = "```\n"
     active = False
+    start = False
     command = ""
+    lang = ""
     commands = list()
     with open(file, "r") as mdfile:
         for line in mdfile:
-            if line.startswith(open_tag):
-                active = True
-            elif line.startswith(close_tag):
+            start = False
+            for tag in open_tags:
+                if line.startswith(tag):
+                    active = start = True
+                    lang = open_tags[tag]
+            if not start and line.startswith(close_tag):
                 if active:
-                    commands.append(command)
+                    commands.append(wrappers[lang] % command)
                     command = ""
                 active = False
-            elif active:
+            elif not start and active:
                 command += line
 
     with open(out, "w") as cmdfile:
-        cmdfile.write("#!/usr/bin/env bash\n\n")
+        cmdfile.write("#!/usr/bin/env bash\n")
+        cmdfile.write("# file: %s\n" % file)
+        cmdfile.write("# extracted %s\n\n" % datetime.today())
         for cmd in commands:
-            cmdfile.write(cmd + "\n")
+            cmdfile.write(cmd)
 
     return commands
 

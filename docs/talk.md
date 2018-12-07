@@ -6,7 +6,7 @@
 
 <img src="assets/logo_white.png" width="40%">
 
-*CCMB workshop 2018*
+taken from the *CCMB workshop 2018*
 
 https://gibbons-lab.github.io/ccmb_workshop
 
@@ -86,15 +86,19 @@ meant for human consumption :point_up:.
 
 Qiime 2 currently only has native support for Mac and Linux.
 
-We will use a server with the latest Qiime 2 installed.
-
-You will get a user name (let's assume it's `user`) and password.
+It can also be deployed on a server or the [cloud](https://docs.qiime2.org/2018.11/install/virtual/aws/).
 
 ----
 
-Goal for now: connect to the server via a terminal.
+Goal for now: get a working Qiime 2 environment.
 
-There might be some minor set up steps :point_down:
+There might be some minor set up steps :point_right:
+
+---
+
+<!-- .slide: data-background="#00897B" class="dark" -->
+
+# If you use Qiime 2 on a server...
 
 ----
 
@@ -112,7 +116,7 @@ at https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
 
 Run the downloaded installer and you are set.
 
-If you open Putty it will ask you for a server (s167.ok.ubc.ca) your user
+If you open Putty it will ask you for a server address your user
 name and password and will connect you to the server.
 
 ----
@@ -124,7 +128,7 @@ name and password and will connect you to the server.
 Download it at https://winscp.net/eng/download.php .
 
 After installing and running it will ask you for the same info as before. Choose
-SFTP or SCP as the protocol (default) and provide the server (s167.ok.ubc.ca)
+SFTP or SCP as the protocol (default) and provide the server address
 your user and password.
 
 ----
@@ -142,20 +146,21 @@ Type "terminal" in the application menu.
 You can connect to the server with
 
 ```sh
-ssh user@s167.ok.ubc.ca
+ssh user@server
 ```
+where `user` is your username and `server` the web address of the server.
 
-and transfer files using `rsync`
+You can transfer files using `rsync`
 
 ```sh
-rsync user@s167.ok.ubc.ca:~/file.txt .
+rsync user@server:~/file.txt .
 ```
 
-----
+---
 
 <!-- .slide: data-background="#00897B" class="dark" -->
 
-# How do I install Qiime 2 on my own equipment?
+# If you want to install Qiime 2 on your own equipment?
 
 https://docs.qiime2.org/2018.11/install/
 

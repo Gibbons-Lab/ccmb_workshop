@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#file: docs/talk.md
+#extracted 2018-12-07 13:03:45.450991
 
 source activate qiime2-2018.11
 
@@ -75,6 +77,14 @@ qiime perc-norm percentile-normalize \
 	--m-batch-column study \
 	--p-otu-thresh 0.0 \
 	--o-perc-norm-table percentile_normalized.qza
+
+python -e 'exec("""from qiime2 import Artifact
+import pandas as pd
+
+df = Artifact.load("percentile_normalized.qza").view(pd.DataFrame)
+converted = Artifact.import_data("FeatureTable[Frequency]", df)
+converted.save("pnorm_freq.qza")
+""")'
 
 qiime diversity beta \
     --i-table pnorm_freq.qza \
