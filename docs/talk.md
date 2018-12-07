@@ -6,7 +6,7 @@
 
 <img src="assets/logo_white.png" width="40%">
 
-taken from the *CCMB workshop 2018*
+from the *CCMB workshop 2018*
 
 https://gibbons-lab.github.io/ccmb_workshop
 
@@ -200,8 +200,7 @@ Also see [this forum post](https://forum.qiime2.org/t/issue-with-docker-toolbox-
 
 <img src="assets/guide.png" width="30%">
 
-*All* output we generate on the server can be found in the
-`treasure_chest` folder at
+*All* output we generate can be found in the `treasure_chest` folder at
 
 https://github.com/gibbons-lab/ccmb_workshop
 
@@ -228,17 +227,13 @@ https://github.com/gibbons-lab/ccmb_workshop
 
 ---
 
-Start by copying the raw data to your home directory:
+Start by copying the [course materials](https://github.com/Gibbons-Lab/ccmb_workshop/archive/master.zip)
+to a folder on your machine or the server.
 
-```sh
-cd ~
-cp -r /srv/workshop/* .
-```
-
-This will give you the following:
+For now we will use the following files:
 
 1. `ubc_data` - directory with the sequencing data
-2. `ubc_manifest.tsv` - list of sequencing files
+2. `ubc_manifest.csv` - list of sequencing files
 3. `samples.tsv` - metadata for the samples
 
 ---
@@ -259,7 +254,7 @@ BBBBAF?A@D2BEEEGGGFGGGHGGGCFGFHHCFHCEFGGH...
 We have our raw sequencing data but Qiime 2 only operates on artifacts. How
 do we convert our data to an artifact?
 
-:egg: :hatched_chick:
+:egg: ↔ :hatched_chick:
 
 ---
 
@@ -295,11 +290,7 @@ our first visualization by inspecting those:
 qiime demux summarize --i-data ubc_data.qza --o-visualization qualities.qzv
 ```
 
-Use WinSCP or the following to transfer the file to your local machine:
-
-```sh
-rsync user@s167.ok.ubc.ca:~/qualities.qzv .
-```
+Copy the file to your local machine.
 
 ---
 
@@ -760,9 +751,18 @@ Qiime 2 actions...
 
 <img src="assets/curse.png" width="60%">
 
+----
+
+`percentile_normalized.qza` has the type `FeatureTable[PercentileNormalized]`
+but most Qiime 2 actions want a `FeatureTable[Frequency]`.
+
 ---
 
-## Qiime does let you work around that if you know what you are doing :nerd_face:
+## Qiime 2 does let you work around that :nerd_face:
+
+But you will *lose provenance* and should make sure what you do *makes sense*.
+
+:thinking_face: Does it make sense to rarefy a `FeatureTable[PercentileNormalized]`?
 
 ----
 
