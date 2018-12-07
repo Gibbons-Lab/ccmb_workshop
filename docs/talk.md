@@ -1,6 +1,6 @@
 <!-- .slide: data-background="#3F51B5" class="dark" -->
 
-# Qiime II for 16S rDNA
+# Qiime II for 16S Amplicon Sequence Analysis
 
 ### Christian Diener & Sean M. Gibbons
 
@@ -211,7 +211,7 @@ https://github.com/gibbons-lab/ccmb_workshop
 
 ## Our data
 
-16S sequencing data of the V4 region from fecal samples
+16S amplicon sequencing data of the V4 region from fecal samples
 
 16 healthy donors and 16 donors with colorectal cancer (CRC).
 
@@ -219,6 +219,12 @@ https://github.com/gibbons-lab/ccmb_workshop
 
 - https://doi.org/10.1158/1940-6207.CAPR-14-0129
 - https://doi.org/10.1186/s13073-016-0290-3
+
+---
+
+## What will we do today?
+
+<img src="assets/steps.png" width="100%">
 
 ---
 
@@ -347,7 +353,7 @@ qiime dada2 denoise-single \
 Alternatively just pull the pre-computed data with:
 
 ```sh
-cp -r /srv/dada2 ~
+cp -r /srv/workshop/treasure_chest/dada2 ~
 ```
 
 ---
@@ -488,7 +494,7 @@ seems like the best idea that does not work great in practice. Why?
 <br>
 
 More elaborate methods use *subsequences (k-mers)* and their counts to *predict* the
-lineage/taxonomy with *machine learning* methods. For 16S fragments this
+lineage/taxonomy with *machine learning* methods. For 16S amplicon fragments this
 provides better *generalization*.
 
 ---
